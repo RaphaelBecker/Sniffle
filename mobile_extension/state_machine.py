@@ -59,8 +59,8 @@ class Sniffer(object):
 
     def __init__(self, model='HP'):
         self.model = model
-        # State of the computer - default is off.
-        self.state = NotMounted()
+        # State of the sniffer - default is Boot.
+        self.state = Boot()
 
     def change_state(self, state):
         """ Change state """
@@ -69,7 +69,6 @@ class Sniffer(object):
 
 if __name__ == "__main__":
     sniffer = Sniffer()
-    sniffer.change_state(Boot)
     sniffer.change_state(Ready)
     sniffer.change_state(NotMounted)
     sniffer.change_state(Ready)
