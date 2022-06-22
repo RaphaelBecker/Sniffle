@@ -71,7 +71,7 @@ class SystemStatus(Thread):
                       "{:.2f}".format(self.used_disc),
                       "{:.2f}".format(self.free_disc),
                       "{:.2f}".format(self.disc_in_use),
-                      "sniffle_status: ",
+                      " — Sniffer_status: ",
                       str(self.usb_mounted),
                       self.state,
                       str(self.sst_button_state),
