@@ -90,12 +90,12 @@ def main():
 
                 # button state false and sniffer does not run: -> sniffer idle, waiting for button press
                 if not sst_tracing_button.get_button_state() and not sniffer_running:
-                    time.sleep(.3)
                     indicator_led.set_green()
+                    time.sleep(.2)
             else:
                 indicator_led.set_off()
                 usb.init_automount()
-                time.sleep(.5)
+                time.sleep(.2)
         except KeyboardInterrupt:
             indicator_led.set_off()
             GPIO.cleanup()

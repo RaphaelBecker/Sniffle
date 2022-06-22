@@ -57,7 +57,7 @@ def stop_sniffle_in_process(sniffle_process: subprocess.Popen, safe_path: str, i
     if system.process_running(sniffle_process):
         if system.kill_process(sniffle_process=sniffle_process):
             logger.info("Sniffer stopped, process successfully killed!")
-            time.sleep(1)
+            time.sleep(.2)
             if os.path.exists(safe_path):
                 logger.info(
                     f"BLT trace {safe_path} successfully saved! Size: {(os.path.getsize(safe_path) / 1024)} KB \n")
