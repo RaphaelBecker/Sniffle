@@ -8,6 +8,7 @@ import system
 
 from python_cli import sniff_receiver_shlex
 from mobile_extension import usb_drive, led
+from state_machine import Sniffer, Ready, NotMounted, StopSniffing, SnifferState, StartSniffing, Sniffing, Error
 
 
 def create_new_pcap_name(date_string: str, str_info: str) -> str:
@@ -24,7 +25,7 @@ def prepare_sniffer_start(usb, str_info):
     return start_dt_opj, dt_string, blt_tracefile_name, safe_path, cmd_command
 
 
-def start_sniffle_in_process(usb: usb_drive.USBDrive, indicator_led: led.Led, logger: logging.Logger):
+def start_sniffle_in_process(usb: usb_drive.USBDrive, indicator_led: led.Led, logger: logging.Logger, statemachine: Sniffer):
     # preconditions
     start_dt_opj, dt_string, blt_tracefile_name, safe_path, cmd_command = prepare_sniffer_start(usb, "process")
     # process:
@@ -32,12 +33,14 @@ def start_sniffle_in_process(usb: usb_drive.USBDrive, indicator_led: led.Led, lo
     if system.process_running(sniffle_process=sniffle_process):
         logger.info(f"Sniffer started in process!")
         indicator_led.set_blue()
+        statemachine.change_state_to(Sniffing)
     else:
         logger.error(f"Sniffer was started but process was not able to start!")
+        statemachine.change_state_to(Error)
     return sniffle_process, safe_path, start_dt_opj
 
 
-def start_sniffle_in_thread(usb: usb_drive.USBDrive, indicator_led: led.Led, logger: logging.Logger):
+def start_sniffle_in_thread(usb: usb_drive.USBDrive, indicator_led: led.Led, logger: logging.Logger, statemachine: Sniffer):
     # preconditions
     start_dt_opj, dt_string, blt_tracefile_name, safe_path, cmd_command = prepare_sniffer_start(usb, "thread")
     # thread:
@@ -47,13 +50,15 @@ def start_sniffle_in_thread(usb: usb_drive.USBDrive, indicator_led: led.Led, log
         time.sleep(.3)
         logger.info(f"Sniffer started in thread!")
         indicator_led.set_blue()
+        statemachine.change_state_to(Sniffing)
     else:
         logger.error(f"Sniffer was started but thread was not able to start!")
+        statemachine.change_state_to(Error)
     return sniffle_thread, safe_path, start_dt_opj
 
 
 def stop_sniffle_in_process(sniffle_process: subprocess.Popen, safe_path: str, indicator_led: led.Led,
-                            logger: logging.Logger):
+                            logger: logging.Logger, statemachine: Sniffer):
     if system.process_running(sniffle_process):
         if system.kill_process(sniffle_process=sniffle_process):
             logger.info("Sniffer stopped, process successfully killed!")
@@ -63,12 +68,17 @@ def stop_sniffle_in_process(sniffle_process: subprocess.Popen, safe_path: str, i
                     f"BLT trace {safe_path} successfully saved! Size: {(os.path.getsize(safe_path) / 1024)} KB \n")
                 indicator_led.indicate_successful()
             else:
+                statemachine.change_state_to(Error)
                 logger.error(f"BLT trace {safe_path} NOT successfully saved!")
                 indicator_led.indicate_failure()
+    else:
+        logger.error("stop_sniffle_process-function was invoked but no process was running!")
+        statemachine.change_state_to(Error)
 
 
 def stop_sniffle_in_thread(sniffle_thread: threading.Thread, safe_path: str, indicator_led: led.Led,
-                           logger: logging.Logger):
+                           logger: logging.Logger, statemachine: Sniffer):
+    statemachine.change_state_to(StopSniffing)
     sniffle_thread.join()
     if not sniffle_thread.is_alive():
         logger.info("Sniffer stopped, thread successfully killed!")
@@ -80,3 +90,6 @@ def stop_sniffle_in_thread(sniffle_thread: threading.Thread, safe_path: str, ind
         else:
             logger.error(f"BLT trace {safe_path} NOT successfully saved!")
             indicator_led.indicate_failure()
+    else:
+        logger.error("stop_sniffle_thread-function was invoked but no thread was running!")
+        statemachine.change_state_to(Error)

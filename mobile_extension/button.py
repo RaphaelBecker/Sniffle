@@ -2,7 +2,6 @@ import RPi.GPIO as GPIO
 import logging
 import sys
 import signal
-import state
 
 logger = logging.getLogger(__name__)
 
@@ -30,11 +29,9 @@ class Button:
         if GPIO.input(self.channel):
             if not self.pressed:
                 self.pressed = True
-                state.sniffer_running = True
                 logger.info(f"Button '{self.name}' pressed, state: {self.pressed}")
             else:
                 self.pressed = False
-                state.sniffer_running = False
                 logger.info(f"Button '{self.name}' pressed, state: {self.pressed}")
 
     def get_button_state(self) -> bool:
