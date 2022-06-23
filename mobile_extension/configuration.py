@@ -19,6 +19,7 @@ class Config:
             "-o"]  # output path can only be added when cmd command is called, because out path contains timestamp in blt_trace_name pcap
         self.optional_arguments = []  # filled from config file with init_config(config_path)
         self.sniffle_cmd_command_without_outpath = []  # filled from usb class if mounted
+        self.execution_mode = "process"
         self.init_config(config_path)
 
     def init_config(self, config_path: pathlib.Path):
@@ -58,6 +59,9 @@ class Config:
         else:
             logger.error(
                 f"<optional_arguments> not found in config file>, import of arguments not possible. Dict: {str(self.config_dictionary)}")
+        if "execution_mode" in self.config_dictionary:
+            self.execution_mode = self.config_dictionary["execution_mode"]
+            logger.info(f"Execution mode: {self.execution_mode}")
 
     def get_config(self) -> dict:
         return self.config_dictionary
