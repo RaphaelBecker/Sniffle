@@ -14,7 +14,6 @@ import gc
 import usb_drive
 import button
 import led
-import process_handler
 import system_status
 from start_stop_sniffle import start_sniffle_in_process, stop_sniffle_in_process, start_sniffle_in_thread, stop_sniffle_in_thread
 from state_machine import Sniffer, Ready, NotMounted, StopSniffing, StartSniffing
@@ -62,13 +61,13 @@ def main():
     sst_tracing_button = button.Button(16, "sst_tracing_button")
 
     # start indicator led thread:
-    indicator_led = led.Led(8, 10, 12)
-    indicator_led.start()
-    indicator_led.set_off()
+    status_led = led.Led(8, 10, 12)
+    status_led.start()
+    status_led.set_off()
 
     sniffer_running = False
 
-    status = system_status.SystemStatus(usb, indicator_led, sst_tracing_button, statemachine)
+    status = system_status.SystemStatus(usb, status_led, sst_tracing_button, statemachine)
     status.start()
 
     while True:
@@ -78,18 +77,18 @@ def main():
                 if sst_tracing_button.get_button_state() and not sniffer_running:
                     statemachine.change_state_to(StartSniffing)
                     if execution_mode == "process":
-                        sniffle_process, safe_path, start_dt_opj = start_sniffle_in_process(usb, indicator_led, logger, statemachine)
+                        sniffle_process, safe_path, start_dt_opj = start_sniffle_in_process(usb, status_led, logger, statemachine)
                     else:
-                        sniffle_thread, safe_path, start_dt_opj = start_sniffle_in_thread(usb, indicator_led, logger, statemachine)
+                        sniffle_thread, safe_path, start_dt_opj = start_sniffle_in_thread(usb, status_led, logger, statemachine)
                     sniffer_running = True
 
                 # button state false and sniffer runs: -> STOP SNIFFING
                 if not sst_tracing_button.get_button_state() and sniffer_running:
                     statemachine.change_state_to(StopSniffing)
                     if execution_mode == "process":
-                        stop_sniffle_in_process(sniffle_process, safe_path, indicator_led, logger, statemachine)
+                        stop_sniffle_in_process(sniffle_process, safe_path, status_led, logger, statemachine)
                     else:
-                        stop_sniffle_in_thread(sniffle_thread, safe_path, indicator_led, logger, statemachine)
+                        stop_sniffle_in_thread(sniffle_thread, safe_path, status_led, logger, statemachine)
                     sniffer_running = False
                     # copy developer log files to usb drive for bug fix analysis
                     usb.copy_logs_to_usb()
@@ -98,16 +97,16 @@ def main():
                 # button state false and sniffer does not run: -> sniffer idle, waiting for button press
                 if not sst_tracing_button.get_button_state() and not sniffer_running:
                     statemachine.change_state_to(Ready)
-                    indicator_led.set_green()
+                    status_led.set_green()
                     time.sleep(.2)
 
             else:
                 statemachine.change_state_to(NotMounted)
-                indicator_led.set_off()
+                status_led.set_off()
                 usb.init_automount()
                 time.sleep(.2)
         except KeyboardInterrupt:
-            indicator_led.set_off()
+            status_led.set_off()
             GPIO.cleanup()
             pass
 

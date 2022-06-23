@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 class SystemStatus(Thread):
-    def __init__(self, usb: usb_drive.USBDrive(), indicator_led, sst_tracing_button, statemachine):
+    def __init__(self, usb: usb_drive.USBDrive(), status_led, sst_tracing_button, statemachine):
         Thread.__init__(self)
         # System health stats
         self.ram_percent = psutil.virtual_memory().percent  # %
@@ -24,13 +24,13 @@ class SystemStatus(Thread):
         self.disc_in_use = self.obj_disk.percent  # %
         # Sniffer stats:
         self.usb = usb
-        self.indicator_led = indicator_led
+        self.status_led = status_led
         self.usb_mounted = self.usb.mount_status()
         self.statemachine = statemachine
         self.state = self.statemachine.get_state()
         self.sst_tracing_button = sst_tracing_button
         self.sst_button_state = self.sst_tracing_button.get_button_state()
-        self.led = self.indicator_led.colour
+        self.led = self.status_led.colour
         self.active_pid_list = []
 
     def run(self):
@@ -57,7 +57,7 @@ class SystemStatus(Thread):
         self.usb_mounted = self.usb.mount_status()
         self.state = self.statemachine.get_state()
         self.sst_button_state = self.sst_tracing_button.get_button_state()
-        self.led = self.indicator_led.colour
+        self.led = self.status_led.colour
 
     def get_system_stats_row(self) -> str:
         stats_list = ["OS_status: ",
