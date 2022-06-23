@@ -66,11 +66,11 @@ def stop_sniffle_in_process(sniffle_process: subprocess.Popen, safe_path: str, i
             if os.path.exists(safe_path):
                 logger.info(
                     f"BLT trace {safe_path} successfully saved! Size: {(os.path.getsize(safe_path) / 1024)} KB \n")
-                indicator_led.indicate_successful()
+                indicator_led.set_success()
             else:
                 statemachine.change_state_to(Error)
                 logger.error(f"BLT trace {safe_path} NOT successfully saved!")
-                indicator_led.indicate_failure()
+                indicator_led.set_failure()
     else:
         logger.error("stop_sniffle_process-function was invoked but no process was running!")
         statemachine.change_state_to(Error)
@@ -86,10 +86,10 @@ def stop_sniffle_in_thread(sniffle_thread: threading.Thread, safe_path: str, ind
         if os.path.exists(safe_path):
             logger.info(
                 f"BLT trace {safe_path} successfully saved! Size: {(os.path.getsize(safe_path) / 1024)} KB \n")
-            indicator_led.indicate_successful()
+            indicator_led.set_success()
         else:
             logger.error(f"BLT trace {safe_path} NOT successfully saved!")
-            indicator_led.indicate_failure()
+            indicator_led.set_failure()
     else:
         logger.error("stop_sniffle_thread-function was invoked but no thread was running!")
         statemachine.change_state_to(Error)

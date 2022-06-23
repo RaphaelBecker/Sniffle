@@ -35,7 +35,7 @@ class Ready(SnifferState):
     """ State of being successfully started up and waiting for start button to get pressed """
 
     name = "ready_to_sniff"
-    allowed = ['ready_to_sniff', 'start_sniffing', 'error']
+    allowed = ['ready_to_sniff', 'start_sniffing', 'error', 'not_mounted']
 
 
 class StartSniffing(SnifferState):

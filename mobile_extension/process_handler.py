@@ -36,7 +36,7 @@ def stop_sniffle(sniffle_process: subprocess.Popen, safe_path: str, indicator_le
             if os.path.exists(safe_path):
                 logger.info(
                     f"BLT trace {safe_path} successfully saved! Size: {(os.path.getsize(safe_path) / 1024)} KB \n")
-                indicator_led.indicate_successful()
+                indicator_led.set_success()
             else:
                 logger.error(f"BLT trace {safe_path} NOT successfully saved!")
-                indicator_led.indicate_failure()
+                indicator_led.set_failure()
