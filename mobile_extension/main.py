@@ -17,7 +17,7 @@ import led
 import process_handler
 import system_status
 from start_stop_sniffle import start_sniffle_in_process, stop_sniffle_in_process, start_sniffle_in_thread, stop_sniffle_in_thread
-from state_machine import Sniffer, Ready, NotMounted, StopSniffing, SnifferState, StartSniffing, Sniffing, Error
+from state_machine import Sniffer, Ready, NotMounted, StopSniffing, StartSniffing
 
 # root:
 sys.path.append("/sniffer")

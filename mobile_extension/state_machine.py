@@ -82,15 +82,3 @@ class Sniffer(object):
     def get_state(self):
         """ Get state """
         return self.state.name
-
-
-if __name__ == "__main__":
-    sniffer = Sniffer()
-    sniffer.change_state_to(Ready)
-    sniffer.change_state_to(NotMounted)
-    sniffer.change_state_to(Ready)
-    sniffer.change_state_to(StartSniffing)
-    sniffer.change_state_to(Sniffing)
-    sniffer.change_state_to(StopSniffing)
-    sniffer.change_state_to(Ready)
-    sniffer.change_state_to(Error)

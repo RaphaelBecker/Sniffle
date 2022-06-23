@@ -17,30 +17,30 @@ class Led(Thread):
         self.pwmR = None
         self.pwmG = None
         self.pwmB = None
-        self.colour = 0  # 0: off, 1: blue; 2: green, 3 = red, 4 = success, 5 = failure
+        self.colour = 'off'  # 0: off, 1: blue; 2: green, 3 = red, 4 = success, 5 = failure
         self.fade = True
         self.init_leds()
 
     def run(self):
         while True:
-            if self.colour == 0:
+            if self.colour == 'off':
                 self.leds_off()
 
             if self.fade:
-                if self.colour == 1:
+                if self.colour == 'blue':
                     self.fade_blue()
-                if self.colour == 2:
+                if self.colour == 'green':
                     self.fade_green()
-                if self.colour == 3:
+                if self.colour == 'red':
                     self.fade_red()
             else:
-                if self.colour == 4:
+                if self.colour == 'success':
                     self.indicate_successful()
-                if self.colour == 5:
+                if self.colour == 'failure':
                     self.indicate_failure()
 
     def init_leds(self):
-        self.colour = 0  # off
+        self.colour = 'off'  # off
         GPIO.setup(self.P_RED, GPIO.OUT)
         GPIO.setup(self.P_GREEN, GPIO.OUT)
         GPIO.setup(self.P_BLUE, GPIO.OUT)
@@ -57,27 +57,27 @@ class Led(Thread):
         self.pwmB.ChangeDutyCycle(int(b / 255 * 100))
 
     def set_blue(self):
-        self.colour = 1
+        self.colour = 'blue'
         self.fade = True
 
     def set_green(self):
-        self.colour = 2
+        self.colour = 'green'
         self.fade = True
 
     def set_red(self):
-        self.colour = 3
+        self.colour = 'red'
         self.fade = True
 
     def set_success(self):
         self.fade = False
-        self.colour = 4
+        self.colour = 'success'
 
     def set_failure(self):
         self.fade = False
-        self.colour = 5
+        self.colour = 'failure'
 
     def set_off(self):
-        self.colour = 0
+        self.colour = 'off'
         self.fade = True
 
     def fade_green(self):
