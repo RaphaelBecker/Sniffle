@@ -109,6 +109,7 @@ class Led(Thread):
         time.sleep(0.1)
 
     def indicate_successful(self):
+        self.setColor(0, 0, 0)
         time.sleep(0.2)
         self.setColor(0, 50, 0)
         time.sleep(0.2)
@@ -116,6 +117,7 @@ class Led(Thread):
         time.sleep(0.2)
 
     def indicate_failure(self):
+        self.setColor(0, 0, 0)
         time.sleep(0.2)
         self.setColor(50, 0, 0)
         time.sleep(0.2)

@@ -22,10 +22,11 @@ A configuration file for Sniffle is on the USB stick.
   * Raspbian Lite (Debian Bullseye)
 
 #### Installation on Raspberry Pi
-  * First of all ```sudo apt-get update```
+  * First of all ```sudo apt update && sudo apt upgrade -y```
   * Create a project folder: `~ $ /sniffer` on Raspberry Pi root 
   * set permissions `sudo chmod ugo+rwx sniffer`
   * Set up SSH remote interpreter IDE 
+  * Install git `sudo apt install git -y`
   * Clone this project into the project folder: `~ $ /sniffer`
   * change permission for setup.sh by `chmod +x setup.sh`
   * run `setup.sh` in `~ $ /sniffer/Sniffle/mobile_extension` folder

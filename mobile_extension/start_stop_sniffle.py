@@ -26,7 +26,7 @@ def prepare_sniffer_start(usb, str_info):
 
 
 def start_sniffle_in_process(usb: usb_drive.USBDrive, status_led: led.Led, logger: logging.Logger, statemachine: Sniffer):
-    # preconditions
+    # preconditions:
     start_dt_opj, dt_string, blt_tracefile_name, safe_path, cmd_command = prepare_sniffer_start(usb, "process")
     # process:
     sniffle_process = system.start_process(cmd_command)
@@ -41,7 +41,7 @@ def start_sniffle_in_process(usb: usb_drive.USBDrive, status_led: led.Led, logge
 
 
 def start_sniffle_in_thread(usb: usb_drive.USBDrive, status_led: led.Led, logger: logging.Logger, statemachine: Sniffer):
-    # preconditions
+    # preconditions:
     start_dt_opj, dt_string, blt_tracefile_name, safe_path, cmd_command = prepare_sniffer_start(usb, "thread")
     # thread:
     sniffle_thread = sniff_receiver_shlex.Sniffle(cmd_command)
@@ -71,6 +71,7 @@ def stop_sniffle_in_process(sniffle_process: subprocess.Popen, safe_path: str, s
                 statemachine.change_state_to(Error)
                 logger.error(f"BLT trace {safe_path} NOT successfully saved!")
                 status_led.set_failure()
+                time.sleep(0.3)
     else:
         logger.error("stop_sniffle_process-function was invoked but no process was running!")
         statemachine.change_state_to(Error)
