@@ -2,9 +2,13 @@
 
 # Written by Raphael Becker
 # Released as open source under GPLv3
+import sys
+# dependency root:
+sys.path.append("/sniffer/Sniffle")
+print(sys.path)
+
 import logging
 import pathlib
-import sys
 from logging.handlers import QueueHandler
 import RPi.GPIO as GPIO
 import os
@@ -17,9 +21,6 @@ import led
 import system_status
 from start_stop_sniffle import start_sniffle_in_process, stop_sniffle_in_process, start_sniffle_in_thread, stop_sniffle_in_thread
 from state_machine import Sniffer, Ready, NotMounted, StopSniffing, StartSniffing
-
-# root:
-sys.path.append("/sniffer")
 
 def init():
     GPIO.setmode(GPIO.BOARD)

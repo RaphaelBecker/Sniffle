@@ -2,7 +2,7 @@ import logging
 import os
 import pathlib
 import time
-import mobile_extension.configuration as configuration
+import configuration as configuration
 import shutil
 
 logger = logging.getLogger(__name__)

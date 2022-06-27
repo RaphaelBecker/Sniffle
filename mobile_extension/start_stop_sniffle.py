@@ -6,7 +6,8 @@ import os
 import time
 import system
 
-from python_cli import sniff_receiver_shlex
+
+import python_cli.sniff_receiver_shlex as sniff_receiver_shlex
 from mobile_extension import usb_drive, led
 from state_machine import Sniffer, Ready, NotMounted, StopSniffing, SnifferState, StartSniffing, Sniffing, Error
 

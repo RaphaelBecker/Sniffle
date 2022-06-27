@@ -2,15 +2,10 @@ import logging
 import os
 import signal
 import subprocess
-import sys
 
 import psutil
 
-sys.path.append("/sniffer")
-from mobile_extension.utils.DS3231 import SDL_DS3231
-
 logger = logging.getLogger(__name__)
-
 
 def start_process(command: []) -> subprocess.Popen:
     logger.info(f"Executing command in subprocess: \n{command}")
@@ -81,21 +76,6 @@ def clean_processes(processes=[]):
                 logger.info(str(line) + ' with PID: ' + str(pid) + ' terminated!')
                 os.kill(pid, 9)
     subprocesses.terminate()
-
-
-def set_time(rtc: SDL_DS3231):
-    # sysdate example: date -s '2022-04-28 11:31:30'
-    # syscall example: hwclock - -set - -date = "9/22/96 16:45:05"
-    date_str = rtc.read_datetime().strftime("%Y%m%d")
-    time_str = rtc.read_datetime().strftime("%H:%M:%S")
-    try:
-        os.system('sudo date +%%Y%%m%%d -s %s' % date_str)
-        os.system('sudo date +%%T -s %s' % time_str)
-        logger.info(f"Raspberry Pi date-time set to {date_str} - {time_str}")
-        system_time_now = subprocess.check_output(['timedatectl'])
-        logger.info(f"Raspberry Pi date info:\n {system_time_now}")
-    except OSError as e:
-        logger.error(f"Error while setting system date: {e}")
 
 
 class Processes:
