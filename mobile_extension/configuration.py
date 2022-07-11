@@ -13,7 +13,7 @@ class Config:
         The filename must contain 'config', '.yml' file extension required
         and be place at root dir of usb flash drive"""
         self.config_dictionary = dict()
-        self.sniff_receiver_base_command = ["sudo", "/bin/python3", "/sniffer/python_cli/sniff_receiver.py"]
+        self.sniff_receiver_base_command = ["sudo", "/bin/python3", "/sniffer/Sniffle/python_cli/sniff_receiver.py"]
         self.serial_port_command_argument = ["-s", "/dev/ttyACM0"]
         self.output_argument = [
             "-o"]  # output path can only be added when cmd command is called, because out path contains timestamp in blt_trace_name pcap

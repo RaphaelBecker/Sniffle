@@ -39,7 +39,7 @@ class SystemStatus(Thread):
             self.update_system_health_stats()
             for i in range(1, 3, 1):
                 self.update_sniffer_stats()
-                time.sleep(.4)
+                time.sleep(.8)
 
     def update_system_health_stats(self):
         self.ram_percent = psutil.virtual_memory().percent  # %

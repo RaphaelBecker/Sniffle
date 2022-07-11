@@ -5,7 +5,7 @@
 import sys
 # dependency root:
 sys.path.append("/sniffer/Sniffle")
-print(sys.path)
+# print(sys.path)
 
 import logging
 import pathlib
@@ -36,7 +36,7 @@ def set_logger() -> logging.Logger:
     wd_stream_handler.setFormatter(formatter)
     wd_file_handler = logging.handlers.TimedRotatingFileHandler(filename=logs_path.joinpath('mobile_extension.log'),
                                                                 when='midnight',
-                                                                backupCount=4)
+                                                                backupCount=3)
     wd_file_handler.setLevel(logging.DEBUG)
     wd_file_handler.setFormatter(formatter)
     # noinspection PyargumentList
