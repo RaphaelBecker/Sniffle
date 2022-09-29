@@ -27,21 +27,24 @@ class Config:
         for filename in filenames:
             if "config" in filename:
                 if ".yml" in filename:
-                    # sanitize:
-                    if ".txt" in filename:
-                        filename_path = config_path.joinpath(filename)
-                        sanitized_filename_path = config_path.joinpath(filename.replace('.txt', ''))
-                        os.rename(filename_path, sanitized_filename_path)
-                        logger.info(f"Sanitized {filename_path} to {str(sanitized_filename_path)}")
-                        filename = filename.replace('.txt', '')
-                    config_path = config_path.joinpath(filename)
-                    with open(config_path, 'r') as stream:
-                        try:
-                            self.config_dictionary = yaml.safe_load(stream=stream)
-                            self.init_cmd_command()
-                        except yaml.YAMLError as exception:
-                            logger.error("Error while loading config.", exc_info=True)
-                            raise exception
+                    if ".bak" not in filename and "-" not in filename:
+                        # sanitize:
+                        if ".txt" in filename:
+                            filename_path = config_path.joinpath(filename)
+                            sanitized_filename_path = config_path.joinpath(filename.replace('.txt', ''))
+                            os.rename(filename_path, sanitized_filename_path)
+                            logger.info(f"Sanitized {filename_path} to {str(sanitized_filename_path)}")
+                            filename = filename.replace('.txt', '')
+                        config_path = config_path.joinpath(filename)
+                        with open(config_path, 'r') as stream:
+                            try:
+                                self.config_dictionary = yaml.safe_load(stream=stream)
+                                self.init_cmd_command()
+                            except yaml.YAMLError as exception:
+                                logger.error("Error while loading config.", exc_info=True)
+                                raise exception
+                    else:
+                        logger.info(f"Please remove copy or backup file of config.yml: {filename}")
                 else:
                     logger.error(f"Not able to load Config file: '{filename}'. No '.yml' file extension.")
             else:
