@@ -60,22 +60,20 @@ class SystemStatus(Thread):
         self.led = self.status_led.colour
 
     def get_system_stats_row(self) -> str:
-        stats_list = ["OS_status: ",
-                      "{:.2f}".format(self.ram_percent),
-                      "{:.2f}".format(self.total_memory),
-                      "{:.2f}".format(self.available_memory),
-                      "{:.2f}".format(self.used_memory),
-                      "{:.2f}".format(self.cpu_usage),
-                      "{:.2f}".format(self.number_of_cpus),
-                      "{:.2f}".format(self.total_disc),
-                      "{:.2f}".format(self.used_disc),
-                      "{:.2f}".format(self.free_disc),
-                      "{:.2f}".format(self.disc_in_use),
-                      " — Sniffer_status: ",
-                      str(self.usb_mounted),
-                      self.state,
-                      str(self.sst_button_state),
-                      str(self.led)
+        stats_list = ["OS_status:  ram: {:.2f} %".format(self.ram_percent),
+                      " total_memory: {:.2f} MB".format(self.total_memory),
+                      " available_memory: {:.2f} MB".format(self.available_memory),
+                      " used_memory: {:.2f} MB".format(self.used_memory),
+                      " cpu_usage: {:.2f}".format(self.cpu_usage),
+                      " number_of_cpus: {:.2f}".format(self.number_of_cpus),
+                      " total_disc: {:.2f} GB".format(self.total_disc),
+                      " used_disc: {:.2f} GB".format(self.used_disc),
+                      " free_disc: {:.2f} GB".format(self.free_disc),
+                      " disc_in_use: {:.2f} GB".format(self.disc_in_use),
+                      "  —  Sniffer_status:  usb_mounted: " + str(self.usb_mounted),
+                      " state: " + self.state,
+                      " sst_button_state: " + str(self.sst_button_state),
+                      " led: " + str(self.led)
                       ]
 
         return ",".join(stats_list)
