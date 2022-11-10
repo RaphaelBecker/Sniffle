@@ -70,8 +70,12 @@ class USBDrive:
             source_logs_path = self.PROJECT_ROOT_DIR.joinpath("logs")
             destination_dir = self.MOUNT_DIR.joinpath("mobile_extension_logs")
             os.makedirs(destination_dir, exist_ok=True)
+            # first empty folder, otherwise files will pile up on usb drive
+            [f.unlink() for f in destination_dir.glob("*") if f.is_file()]
+            logger.info(f"Deleted logs in USB stick: {destination_dir}")
+            # copy files
             shutil.copytree(source_logs_path, destination_dir, dirs_exist_ok=True)
-            logger.info(f"Updated logs from {source_logs_path} to USB stick: {destination_dir}")
+            logger.info(f"Copied logs from {source_logs_path} to USB stick: {destination_dir}")
         else:
             logger.error(f"Logfiles could not be copied to USB drive because USB was not mounted.")
 

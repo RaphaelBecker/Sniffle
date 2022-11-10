@@ -16,7 +16,8 @@ class Config:
         self.sniff_receiver_base_command = ["sudo", "/bin/python3", "/sniffer/Sniffle/python_cli/sniff_receiver.py"]
         self.serial_port_command_argument = ["-s", "/dev/ttyACM0"]
         self.output_argument = [
-            "-o"]  # output path can only be added when cmd command is called, because out path contains timestamp in blt_trace_name pcap
+            "-o"]  # output path can only be added when cmd command is called,
+        # because out path contains timestamp in blt_trace_name pcap
         self.optional_arguments = []  # filled from config file with init_config(config_path)
         self.sniffle_cmd_command_without_outpath = []  # filled from usb class if mounted
         self.execution_mode = "process"
@@ -49,19 +50,26 @@ class Config:
                     logger.error(f"Not able to load Config file: '{filename}'. No '.yml' file extension.")
             else:
                 logger.error(
-                    f"Cannot load config file: {filename}. The filename must contain 'config', '.yml' file extension required and be place at root dir of usb flash drive.")
+                    f"Cannot load config file: {filename}. The filename must contain 'config', '.yml' "
+                    f"file extension required and be place at root dir of usb flash drive.")
 
     def init_cmd_command(self):
         if "optional_arguments" in self.config_dictionary:
             self.optional_arguments = self.config_dictionary["optional_arguments"]
             if self.optional_arguments:
-                self.sniffle_cmd_command_without_outpath = self.sniff_receiver_base_command + self.serial_port_command_argument + self.optional_arguments + self.output_argument
+                self.sniffle_cmd_command_without_outpath = self.sniff_receiver_base_command \
+                                                           + self.serial_port_command_argument \
+                                                           + self.optional_arguments \
+                                                           + self.output_argument
             else:
-                self.sniffle_cmd_command_without_outpath = self.sniff_receiver_base_command + self.serial_port_command_argument + self.output_argument
+                self.sniffle_cmd_command_without_outpath = self.sniff_receiver_base_command \
+                                                           + self.serial_port_command_argument \
+                                                           + self.output_argument
             logger.info(f"CMD sniffle base command: {self.sniffle_cmd_command_without_outpath}")
         else:
             logger.error(
-                f"<optional_arguments> not found in config file>, import of arguments not possible. Dict: {str(self.config_dictionary)}")
+                f"<optional_arguments> not found in config file, import of arguments not possible. "
+                f"Dict: {str(self.config_dictionary)}")
         if "execution_mode" in self.config_dictionary:
             self.execution_mode = self.config_dictionary["execution_mode"]
             logger.info(f"Execution mode: {self.execution_mode}")
