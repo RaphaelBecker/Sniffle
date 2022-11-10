@@ -30,6 +30,7 @@ A configuration file for Sniffle is on the USB stick.
   * Clone this project into the project folder: `~ $ /sniffer`
   * change permission for setup.sh by `chmod +x setup.sh`
   * run `setup.sh` in `~ $ /sniffer/Sniffle/mobile_extension` folder
+    * if file not found, do: `dos2unix -k -o setup.sh`
 
 #### Set up automount usb drives:
 This project relies on automount usb drives at plugin and remove. 
@@ -51,9 +52,11 @@ Usb devices will be mounted starting with usb, usb0 to usb7.
 #### Install RTC 
   * Install i2c tools: ```sudo apt-get install i2c-tools``` 
   * run rtc install script ```bash mobile_extension/utils/install_rtc.sh```
+    * if file not found, do: `dos2unix -k -o mobile_extension/utils/install_rtc.sh`
   * check whether RTC time is NOT: n/a by ```timedatectl```
-  * Check if Raspberry Pi system time ```date``` and RTC are the same ```sudo hwclock -r```
-  * The Raspberry Pi will automatically set the time to RTC when WIFI is available, if not write time to RTC manually by ```sudo hwclock -w``` 
+  * Set RTC to local time by: ```sudo timedatectl set-local-rtc 1```
+    * Optional: Check if Raspberry Pi system time ```date``` and RTC are the same ```sudo hwclock -r```
+    * Optional: The Raspberry Pi will automatically set the time to RTC when WIFI is available, if not write time to RTC manually by ```sudo hwclock -w``` 
 
 #### Set up USB flash drive
   * Copy `sniffle_config.yml` from `/mobile_extension` to root of USB drive
