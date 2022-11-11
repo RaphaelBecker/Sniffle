@@ -1,5 +1,4 @@
 import pathlib
-import time
 import unittest
 import mobile_extension.configuration as configuration
 

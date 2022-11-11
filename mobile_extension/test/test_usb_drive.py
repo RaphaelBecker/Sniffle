@@ -1,7 +1,5 @@
-import time
 import unittest
 import mobile_extension.usb_drive as usb
-import pathlib
 
 
 class TestUsb(unittest.TestCase):

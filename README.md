@@ -63,6 +63,13 @@ Usb devices will be mounted starting with usb, usb0 to usb7.
   * Create folder for blt traces: `/blt_traces` in root of USB drive
   * Create folder for developer logfiles: `/mobile_extension_logs` in root of USB drive
 
+#### Include automatic decryption by crackle:
+  * clone crackle into debian root: https://github.com/mikeryan/crackle
+  * `cd crackle`
+  * `sudo apt-get install libpcap-dev`
+  * `sudo make`
+  * Now crackle can be executed in ./crackle folder
+
 #### Set up crontab for project
   * Optiona: Create crontab log file in `/sniffer` by `touch crontab_logs.txt`
   * Enable cron jobs: `sudo systemctl enable cron.service`
