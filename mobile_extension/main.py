@@ -4,6 +4,8 @@
 # Released as open source under GPLv3
 import sys
 # dependency root:
+from mobile_extension import decryption
+
 sys.path.append("/sniffer/Sniffle")
 # print(sys.path)
 
@@ -91,6 +93,10 @@ def main():
                     else:
                         stop_sniffle_in_thread(sniffle_thread, safe_path, status_led, logger, statemachine)
                     sniffer_running = False
+                    # decrypt
+                    ltk = usb.config.ltk
+                    usb_path_blt_traces = usb.MOUNT_DIR.joinpath("blt_traces")
+                    decryption.decrypt(usb_path_blt_traces, ltk)
                     # copy developer log files to usb drive for bug fix analysis
                     usb.copy_logs_to_usb()
                     gc.collect()
