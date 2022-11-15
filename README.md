@@ -65,7 +65,9 @@ Usb devices will be mounted starting with usb, usb0 to usb7.
 
 #### Include automatic decryption by crackle:
   * clone crackle into debian root: https://github.com/mikeryan/crackle
+  * set permissions `sudo chmod ugo+rwx crackle`
   * `cd crackle`
+  * `sudo apt-get update`
   * `sudo apt-get install libpcap-dev`
   * `sudo make`
   * Now crackle can be executed in ./crackle folder
